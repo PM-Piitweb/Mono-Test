@@ -12,8 +12,8 @@ const getAllVideos = async (req, res) => {
 
 // POST /api/videos
 const createVideo = async (req, res) => {
-  const { title, url } = req.body;
-  const video = new Video({ title, url });
+  const { title, url, thumbnail } = req.body; // เพิ่ม thumbnail
+  const video = new Video({ title, url, thumbnail });
   try {
     const newVideo = await video.save();
     res.status(201).json(newVideo);
@@ -35,10 +35,11 @@ const getVideoById = async (req, res) => {
 
 // PUT /api/videos/:id
 const updateVideo = async (req, res) => {
+  const { title, url, thumbnail } = req.body; // รองรับ thumbnail
   try {
     const updatedVideo = await Video.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      { title, url, thumbnail },
       { new: true }
     );
     if (!updatedVideo) return res.status(404).json({ message: 'Video not found' });
